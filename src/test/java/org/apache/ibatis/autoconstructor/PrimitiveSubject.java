@@ -21,6 +21,7 @@ public class PrimitiveSubject {
   private final int id;
   private final String name;
   private final int age;
+  /* height 和 weight对象构造为 int 在创建 PrimitiveSubject 对象时 若两者值为 Null 会报错 */
   private final int height;
   private final int weight;
   private final boolean active;

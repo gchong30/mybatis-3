@@ -1,0 +1,40 @@
+基础支持层
+    反射模块   reflection
+    类型模块   type
+    日志模块   logging
+    IO 模块   IO
+    解析器模块   parsing        对XPath 封装  为 MyBatis 初始化时解析 mybatis-config.xml 配置文件以及映射配置文件提供支持
+                              为处理动态 SQL 语句中的占位符提供支持
+    数据源模块   datasource
+    事务模块    transaction     很多场景中，Mybatis 会与Spring框架集成 并由Spring框架管理事务
+    缓存模块    cache       MyBatis中提供的一级 二级缓存依赖于此模块。且这两级缓存和MyBatis以及整个应用运行与同一个JVM，
+                           共享同一块堆内存。 若这两级缓存数据量较大，则影响其他应用运行。因此当需要缓存大量数据时，优先考虑使用Redis , Memcache等缓存工具
+    捆绑模块    binding     在调用SqlSession 相应方法执行数据库操作时 , 需要指定映射文件中定义的SQL节点，如果出现拼写错误 , 我们只能在运行时才能发现异常
+                           为尽早发现错误, MyBatis 通过Binding模块，将用户自定义的Mapper接口与映射文件关联，系统通过调用自定义Mapper接口方法执行SQL语句完成数据库操作
+                           以避免上述问题.   另开发人员无须编写自定义 Mapper 接口的实现，MyBatis 会自动为其创建动态代理对象。在有些场景中，
+                           自定义 Mapper 接口可以完全代替映射配置文件，但有的映射规则和 SQL 语句的定义还是写在映射配置文件中比较方便，例如动态 SQL 语句的定义
+    注解模块    annotations
+    异常模块    exceptions
+
+
+核心处理层
+    配置解析    builder & mapping   前者为配置解析过程  后者主要为SQL操作解析后的映射
+    SQL解析    scripting      MyBatis 中的scripting 模块 会根据用户传入的实参，解析映射文件中定义的动态SQL节点 , 并形成数据库可执行的SQL语句
+                              后处理SQL语句中占位符，绑定传入实参
+    SQL执行    executor & cursor     执行器 & 执行结果的游标        SQL执行涉及多个组件  其中比较重要的是 Executor StatementHandler ParameterHandler 和ResultSetHandler
+                                                                Executor: 负责维护一级缓存和二级缓存 , 并提供事务管理相关操作, 会将数据库委托给StatementHandler完成
+                                                                StatementHandler: 首先通过ParameterHandler完成 SQL 语句的实参绑定, 后通过java.sql.Statement
+                                                                对象完成SQL语句并得到结果集 , 最后通过ResultSetHandler 完成结果集的映射, 得到结果对象并返回
+插件层     plugin      MyBatis 并不能切合所有的应用场景, 因此MyBatis 提供了插件接口，我们可以通过添加用户自定义插件的方式对 MyBatis 进行拓展。例如拦截SQL语句执行并对其进行重写等
+接口层     session     定义MyBatis 暴漏给应用程序调用的API。
+其他层     (为统一命名  严格不能称作一个层)
+    JDBC模块      jdbc    JDBC单元测试工具类
+    Lang模块      lang
+
+
+    
+
+
+
+    
+

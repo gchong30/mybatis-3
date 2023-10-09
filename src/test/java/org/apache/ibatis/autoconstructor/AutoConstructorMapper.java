@@ -14,27 +14,34 @@
  *    limitations under the License.
  */
 package org.apache.ibatis.autoconstructor;
-
 import java.util.List;
-
 import org.apache.ibatis.annotations.Select;
 
+
+/*采用注解 @Select 注解编写 SQL*/
 public interface AutoConstructorMapper {
+
+  //==============PrimitiveSubject=================
   @Select("SELECT * FROM subject WHERE id = #{id}")
   PrimitiveSubject getSubject(final int id);
-
   @Select("SELECT * FROM subject")
   List<PrimitiveSubject> getSubjects();
 
+  //=========AnnotatedSubject===========
   @Select("SELECT * FROM subject")
   List<AnnotatedSubject> getAnnotatedSubjects();
 
   @Select("SELECT * FROM subject")
   List<BadAnnotatedSubject> getBadAnnotatedSubjects();
 
+  // ========== BadSubject ==========
   @Select("SELECT * FROM subject")
   List<BadSubject> getBadSubjects();
 
+  // ========== ExtensiveSubject ==========
   @Select("SELECT * FROM extensive_subject")
   List<ExtensiveSubject> getExtensiveSubjects();
 }
+
+
+

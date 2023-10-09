@@ -35,9 +35,18 @@ public class ExtensiveSubject {
   private final String aClob;
   private final String aBlob;
 
-  public ExtensiveSubject(final byte aByte, final short aShort, final char aChar, final int anInt, final long aLong,
-      final float aFloat, final double aDouble, final boolean aBoolean, final String aString, final TestEnum anEnum,
-      final String aClob, final String aBlob) {
+  public ExtensiveSubject(final byte aByte,
+                          final short aShort,
+                          final char aChar,
+                          final int anInt,
+                          final long aLong,
+                          final float aFloat,
+                          final double aDouble,
+                          final boolean aBoolean,
+                          final String aString,
+                          final TestEnum anEnum,
+                          final String aClob,
+                          final String aBlob) {
     this.aByte = aByte;
     this.aShort = aShort;
     this.aChar = aChar;
