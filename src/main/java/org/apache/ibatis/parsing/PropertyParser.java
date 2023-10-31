@@ -18,6 +18,7 @@ package org.apache.ibatis.parsing;
 import java.util.Properties;
 
 /**
+ * 动态属性解析器
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
@@ -53,15 +54,35 @@ public class PropertyParser {
   }
 
   public static String parse(String string, Properties variables) {
+    //创建 VariableTokenHandler 对象
     VariableTokenHandler handler = new VariableTokenHandler(variables);
+    //创建 GenericTokenParser 对象
     GenericTokenParser parser = new GenericTokenParser("${", "}", handler);
+    //执行解析
     return parser.parse(string);
   }
 
+
   private static class VariableTokenHandler implements TokenHandler {
+    /**
+     * 变量 Properties 对象
+     */
     private final Properties variables;
+    /**
+     * 是否开启默认值功能。默认为 {@link #ENABLE_DEFAULT_VALUE}
+     */
     private final boolean enableDefaultValue;
+    /**
+     * 默认值的分隔符。默认为 {@link #KEY_DEFAULT_VALUE_SEPARATOR} ，即 ":" 。
+     */
     private final String defaultValueSeparator;
+
+    /* 开启默认值功能。默认为 ENABLE_DEFAULT_VALUE 配置如下
+    <properties resource="org/mybatis/example/config.properties">
+     <!--...-->
+      <property name="org.apache.ibatis.parsing.PropertyParser.enable-default-value"value="true"/> <!--Enable this feature -->
+    </properties>
+    */
 
     private VariableTokenHandler(Properties variables) {
       this.variables = variables;
@@ -69,14 +90,24 @@ public class PropertyParser {
       this.defaultValueSeparator = getPropertyValue(KEY_DEFAULT_VALUE_SEPARATOR, DEFAULT_VALUE_SEPARATOR);
     }
 
+    /* 默认值的分隔符。默认为 KEY_DEFAULT_VALUE_SEPARATOR 即 :  配置如下(改为 ?:)
+     <properties resource="org/mybatis/example/config.properties">
+     <!-- ... -->
+      <property name="org.apache.ibatis.parsing.PropertyParser.default-value-separator" value="?:"/> <!-- Change default value of separator -->
+     </properties>
+     */
+
     private String getPropertyValue(String key, String defaultValue) {
       return variables == null ? defaultValue : variables.getProperty(key, defaultValue);
     }
+
+
 
     @Override
     public String handleToken(String content) {
       if (variables != null) {
         String key = content;
+        // 是否开启默认值功能
         if (enableDefaultValue) {
           final int separatorIndex = content.indexOf(defaultValueSeparator);
           String defaultValue = null;
